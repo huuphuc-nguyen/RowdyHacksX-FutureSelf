@@ -5,6 +5,8 @@ import * as yup from 'yup';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { BsFillKeyFill, BsEnvelopeFill } from 'react-icons/bs';
 import background from '../../assets/background2.jpg';
+import { supabase } from '../../client';
+import { toast } from 'sonner';
 
 const schema = yup.object().shape({
   email: yup.string().email('Invalid email address').required('Please enter your email'),
@@ -18,13 +20,19 @@ const Signup = () => {
   });
 
   const onSubmit = async (data) => {
-    // try {
-    //   await createUserWithEmailAndPassword(auth, data.email, data.passWord);
-    //   alert('Account created successfully!');
-    //   reset();
-    // } catch (error) {
-    //   alert(error.message);
-    // }
+    const {error} = await supabase.from('user').insert([
+        {
+            email: data.email,
+            name: data.userName,
+            password: data.passWord
+        }]);
+    if (error) {
+        console.error('Insert failed:', error.message);
+        toast.error('Username or email already exists');
+    } else {
+        toast.success('Created account successfully');
+        reset(); // Clear form only if the insertion was successful
+    }
   };
 
   return (

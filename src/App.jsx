@@ -9,9 +9,13 @@ import AddGoal from './pages/AddGoal/AddGoal'
 import AllLetters from './pages/AllLetters/AllLetters'
 import AllGoals from './pages/AllGoals/AllGoals'
 import DataDisplay from "./pages/DataDisplay"
+import { Toaster } from 'sonner'
 
 function App() {
-    return (   
+    return (   <>
+      <Toaster position='top-right' richColors closeButton toastOptions={{
+        style: { padding: '20px' },
+      }} />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -23,6 +27,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/data" element={<DataDisplay/>}/>
       </Routes>
+      </>
   )
 }
 
