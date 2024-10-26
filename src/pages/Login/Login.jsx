@@ -62,7 +62,7 @@ const Login = () => {
               type="submit"
               className='self-center bg-electricBlue text-darkCharcoal rounded-lg px-4 py-2 mt-8 shadow-md hover:bg-cyberYellow hover:scale-105 duration-300'
             >
-              {false ? 'Đang đăng nhập' : 'Đăng nhập'}
+              {false ? '...Loading' : 'Login'}
             </button>
           </form>
         </div>

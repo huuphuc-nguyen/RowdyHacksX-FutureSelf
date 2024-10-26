@@ -7,6 +7,7 @@ import { BsFillKeyFill, BsEnvelopeFill } from 'react-icons/bs';
 import background from '../../assets/background2.jpg';
 import { supabase } from '../../client';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 const schema = yup.object().shape({
   email: yup.string().email('Invalid email address').required('Please enter your email'),
@@ -19,6 +20,7 @@ const Signup = () => {
     resolver: yupResolver(schema)
   });
 
+    const navigate = useNavigate(); 
   const onSubmit = async (data) => {
     const {error} = await supabase.from('user').insert([
         {
@@ -32,6 +34,7 @@ const Signup = () => {
     } else {
         toast.success('Created account successfully');
         reset(); // Clear form only if the insertion was successful
+        navigate('/dashboard');
     }
   };
 
