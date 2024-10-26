@@ -20,8 +20,9 @@ const Home = () => {
       <Typing
           text={["FutureSelf: Time Capsule"]}
           className="text-5xl font-bold text-cyberYellow mb-4"
-          speed={50}
+          speed={100}
           eraseDelay={2000}
+          typingDelay={100}
         />
         <p className="text-lg italic max-w-lg mb-6">
           Step into the future and set goals, memories, and aspirations for your future self.
@@ -37,7 +38,7 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="bg-darkCharcoal py-12">
+      <section className="bg-gradient-to-r from-deepPurple to-darkCharcoal py-12">
         <h2 className="text-3xl font-bold text-center text-cyberYellow mb-8">Explore Your Future Self</h2>
         <div className="flex flex-col lg:flex-row items-center justify-center space-y-6 lg:space-y-0 lg:space-x-8 max-w-4xl mx-auto">
           <div className="bg-darkCharcoal rounded-lg p-6 text-center shadow-md w-full lg:w-1/3">
@@ -59,7 +60,7 @@ const Home = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-darkCharcoal text-center py-6 text-sm text-metallicSilver">
+      <footer className="bg-gradient-to-r from-deepPurple to-darkCharcoal text-center py-6 text-sm text-metallicSilver">
         <p>&copy; {new Date().getFullYear()} FutureSelf. All Rights Reserved.</p>
       </footer>
     </main>
