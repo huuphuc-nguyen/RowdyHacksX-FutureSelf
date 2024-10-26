@@ -4,7 +4,9 @@ import background from '../../assets/background2.jpg';
 import Typing from 'react-typing-effect';
 
 const Home = () => {
+
   return (
+ 
     <main
     className="min-h-screen text-metallicSilver bg-cover bg-center"
     style={{
