@@ -1,9 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import background from '../../assets/background.jpg';
+import ItemSection from '../../components/ItemSection/ItemSection';
+import { date } from 'yup';
 
 const Dashboard = () => {
+    const list=[{
+        content: 'Letter 1',
+        date: '2022-12-12'
+    },{
+        content: 'Letter 2',
+        date: '2022-12-12'
+    },{
+        content: 'Letter 3',
+        date: '2022-12-12'
+    },{
+        content: 'Letter 4',
+        date: '2022-12-12'
+    },{
+        content: 'Letter 5',
+        date: '2022-12-12'
+    }
+    ]
   return (
-    <main className="min-h-screen bg-gradient-to-r from-deepPurple to-darkCharcoal text-metallicSilver flex items-center justify-center">
+    <main 
+    className={`min-h-screen w-full bg-cover grid place-items-center bg-center bg-no-repeat before:content-[''] before:absolute before:inset-0 before:bg-black before:opacity-30`}
+    style={{ backgroundImage: `url(${background})` }}>
       <div className="bg-darkCharcoal/80 p-8 rounded-xl shadow-lg w-full max-w-5xl backdrop-blur-md">
         
         {/* Greeting Section */}
@@ -28,34 +50,10 @@ const Dashboard = () => {
         </div>
 
         {/* Upcoming Letters */}
-        <div className="mb-8">
-          <h3 className="text-2xl font-bold text-cyberYellow mb-4">Upcoming Letters</h3>
-          <ul className="space-y-4">
-            <li className="flex items-center justify-between bg-darkCharcoal rounded-lg p-3 border-l-4 border-electricBlue">
-              <span>Letter to Future Me - 2024</span>
-              <span className="text-electricBlue">Delivery Date: 2024-06-01</span>
-            </li>
-            {/* Add more letters here */}
-          </ul>
-          <Link to="/all-letters" className="text-neonPink hover:underline mt-4 inline-block">
-            View All Letters
-          </Link>
-        </div>
+        <ItemSection section='letters' itemlist={list}/>
 
         {/* Upcoming Goals */}
-        <div>
-          <h3 className="text-2xl font-bold text-cyberYellow mb-4">Upcoming Goals</h3>
-          <ul className="space-y-4">
-            <li className="flex items-center justify-between bg-darkCharcoal rounded-lg p-3 border-l-4 border-neonPink">
-              <span>Become a Full-Stack Developer</span>
-              <span className="text-neonPink">Target Date: 2024-12-31</span>
-            </li>
-            {/* Add more goals here */}
-          </ul>
-          <Link to="/all-goals" className="text-neonPink hover:underline mt-4 inline-block">
-            View All Goals
-          </Link>
-        </div>
+        <ItemSection section='goals' itemlist={list}/>
 
         {/* Quick Actions */}
         <div className="flex space-x-4 justify-center mt-8">
