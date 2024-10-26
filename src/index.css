@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+*, *::before, *::after {
+  Box-sizing: border-box;
+  Margin: 0;
+  Padding: 0;
+}
