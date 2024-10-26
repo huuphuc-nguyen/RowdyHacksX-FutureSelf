@@ -8,6 +8,7 @@ import AddLetter from './pages/AddLetter/AddLetter'
 import AddGoal from './pages/AddGoal/AddGoal'
 import AllLetters from './pages/AllLetters/AllLetters'
 import AllGoals from './pages/AllGoals/AllGoals'
+import DataDisplay from "./pages/DataDisplay"
 
 function App() {
     return (   
@@ -20,6 +21,7 @@ function App() {
         <Route path="/all-letters" element={<AllLetters />} />
         <Route path="/all-goals" element={<AllGoals />} />
         <Route path="/" element={<Home />} />
+        <Route path="/data" element={<DataDisplay/>}/>
       </Routes>
   )
 }
