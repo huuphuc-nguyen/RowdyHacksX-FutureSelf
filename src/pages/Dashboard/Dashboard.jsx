@@ -37,7 +37,7 @@ const Dashboard = () => {
             </li>
             {/* Add more letters here */}
           </ul>
-          <Link to="/letters" className="text-neonPink hover:underline mt-4 inline-block">
+          <Link to="/all-letters" className="text-neonPink hover:underline mt-4 inline-block">
             View All Letters
           </Link>
         </div>
@@ -52,7 +52,7 @@ const Dashboard = () => {
             </li>
             {/* Add more goals here */}
           </ul>
-          <Link to="/goals" className="text-neonPink hover:underline mt-4 inline-block">
+          <Link to="/all-goals" className="text-neonPink hover:underline mt-4 inline-block">
             View All Goals
           </Link>
         </div>

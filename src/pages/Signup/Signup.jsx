@@ -2,8 +2,6 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-//import { createUserWithEmailAndPassword } from 'firebase/auth';
-//import { auth } from './firebaseConfig'; // Import your Firebase auth configuration
 import { BsFillPersonFill } from 'react-icons/bs';
 import { BsFillKeyFill, BsEnvelopeFill } from 'react-icons/bs';
 import background from '../../assets/background2.jpg';

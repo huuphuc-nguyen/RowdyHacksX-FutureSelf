@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { BsFillPersonFill, BsFillKeyFill } from "react-icons/bs";
 import background from '../../assets/background2.jpg'
+import { useNavigate } from 'react-router-dom';
 
 const schema = yup.object().shape({
   userName: yup.string().required('Please enter your username'),
@@ -11,11 +12,14 @@ const schema = yup.object().shape({
 })
 
 const Login = () => {
+    const navigate = useNavigate()
+
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: yupResolver(schema)
   })
 
   const onSubmit = (data) => {
+    navigate('/dashboard')
     reset()
   }
 

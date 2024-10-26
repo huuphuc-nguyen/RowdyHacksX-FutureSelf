@@ -6,7 +6,8 @@ import Signup from './pages/Signup/Signup'
 import Dashboard from './pages/Dashboard/Dashboard'
 import AddLetter from './pages/AddLetter/AddLetter'
 import AddGoal from './pages/AddGoal/AddGoal'
-
+import AllLetters from './pages/AllLetters/AllLetters'
+import AllGoals from './pages/AllGoals/AllGoals'
 
 function App() {
     return (   
@@ -16,6 +17,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/add-letter" element={<AddLetter />} />
         <Route path="/add-goal" element={<AddGoal />} />
+        <Route path="/all-letters" element={<AllLetters />} />
+        <Route path="/all-goals" element={<AllGoals />} />
         <Route path="/" element={<Home />} />
       </Routes>
   )
