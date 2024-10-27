@@ -7,6 +7,7 @@ import { supabase } from '../../client';
 import background from '../../assets/background2.jpg';
 import { useUser } from '../../context/UserContext';
 import { useParams } from 'react-router-dom';
+import BackButton from '../../components/BackButton';
 
 const schema = yup.object().shape({
   title: yup
@@ -98,46 +99,55 @@ const DetailLetter = () => {
   };
 
   return (
-    <main 
+    <main
       className={`min-h-screen w-full bg-cover grid place-items-center bg-center bg-no-repeat before:content-[''] before:absolute before:inset-0 before:bg-black before:opacity-30`}
-      style={{ backgroundImage: `url(${background})` }}>
+      style={{ backgroundImage: `url(${background})` }}
+    >
       <div className="bg-darkCharcoal/50 p-8 rounded-xl shadow-lg w-full max-w-3xl backdrop-blur-md">
+        <BackButton />
         <h2 className="text-3xl font-bold text-cyberYellow mb-6 text-center">
-          {isEditing ? 'Edit Your Letter' : 'Write a Letter to Your Future Self'}
+          {isEditing
+            ? "Edit Your Letter"
+            : "Write a Letter to Your Future Self"}
         </h2>
-        
+
         {/* Form with validation */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          
           {/* Title Input */}
           <input
-            {...register('title')}
+            {...register("title")}
             placeholder="Enter your letter title..."
             className="w-full p-4 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
           />
           {errors.title && (
-            <p className="text-sm text-neonPink font-semibold">{errors.title.message}</p>
+            <p className="text-sm text-neonPink font-semibold">
+              {errors.title.message}
+            </p>
           )}
 
           {/* Content Textarea */}
           <textarea
-            {...register('content')}
+            {...register("content")}
             placeholder="Write your message here..."
             className="w-full p-4 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
             rows={6}
           />
           {errors.content && (
-            <p className="text-sm text-neonPink font-semibold">{errors.content.message}</p>
+            <p className="text-sm text-neonPink font-semibold">
+              {errors.content.message}
+            </p>
           )}
 
           {/* Delivery Date Input */}
           <input
             type="date"
-            {...register('deliveryDate')}
+            {...register("deliveryDate")}
             className="w-full p-3 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-electricBlue focus:border-2"
           />
           {errors.deliveryDate && (
-            <p className="text-sm text-neonPink font-semibold">{errors.deliveryDate.message}</p>
+            <p className="text-sm text-neonPink font-semibold">
+              {errors.deliveryDate.message}
+            </p>
           )}
 
           {/* Submit Button */}
@@ -146,7 +156,11 @@ const DetailLetter = () => {
             disabled={isSaving}
             className="w-full bg-electricBlue text-darkCharcoal py-3 rounded-lg font-bold hover:bg-cyberYellow/80 hover:scale-105 transition duration-300"
           >
-            {isSaving ? 'Saving...' : isEditing ? 'Update Letter' : 'Save Letter'}
+            {isSaving
+              ? "Saving..."
+              : isEditing
+              ? "Update Letter"
+              : "Save Letter"}
           </button>
         </form>
       </div>

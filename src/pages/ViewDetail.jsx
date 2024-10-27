@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 
 export default function ViewDetail () {
   const { id } = useParams();
-
   // Sample letter data; in a real app, this would come from an API or context
   const letters = [
     {
