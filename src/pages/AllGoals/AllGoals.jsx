@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import BackButton from "../../components/BackButton";
+import background from "../../assets/background.jpg";
 
 const AllGoals = () => {
   const [goals, setGoals] = useState([
