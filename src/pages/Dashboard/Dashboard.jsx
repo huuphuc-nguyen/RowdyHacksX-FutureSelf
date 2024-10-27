@@ -5,7 +5,6 @@ import ItemSection from '../../components/ItemSection/ItemSection';
 import { useUser } from '../../context/UserContext';
 import { supabase } from "../../client.js";
 import Loading from '../../components/Loading/Loading.jsx'
-import { set } from 'react-hook-form';
 
 const Dashboard = () => {
     const {user} = useUser();
@@ -27,7 +26,7 @@ const Dashboard = () => {
           if (lettersError) {
             console.error('Error fetching letters:', lettersError.message);
           } else {
-            setLetters(letters);
+            setLetters(letters.map(letter => ({...letter, content: letter.content.length > 100 ? `${letter.content.substring(0, 100)}...`: letter.content})));
           }
       
           // Fetch goals
@@ -40,7 +39,7 @@ const Dashboard = () => {
           if (goalsError) {
             console.error('Error fetching goals:', goalsError.message);
           } else {
-            setGoals(goals);
+            setGoals(goals.map(goal => ({...goal, content: goal.content.length > 100 ? `${goal.content.substring(0, 100)}...`: goal.content})));
             setCompletedGoals(goals.filter(goal => goal.done));
           }
         } catch (err) {

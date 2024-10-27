@@ -22,6 +22,7 @@ function App() {
         <Route path="/add-goal" element={<AddGoal />} />
         <Route path="/all-letters" element={<AllLetters />} />
         <Route path="/all-goals" element={<AllGoals />} />
+        <Route path="/letters/:id" element={<AddLetter />} />
         <Route path="/" element={<Home />} />
         <Route path="/data" element={<DataDisplay/>}/>
       </Routes>

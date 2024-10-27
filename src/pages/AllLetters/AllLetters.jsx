@@ -1,55 +1,79 @@
-import React from 'react';
+import {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import { useUser } from '../../context/UserContext';
+import { supabase } from "../../client.js";
+import Loading from '../../components/Loading/Loading.jsx'
+import LetterCard from '../../components/LetterCard/LetterCard.jsx';
+import background from '../../assets/background.jpg';
 
 const AllLetters = () => {
-  const letters = [
-    { id: 1, title: 'Letter to My Future Self', preview: 'Dear Future Me, remember to stay strong...', deliveryDate: '2024-06-01' },
-    { id: 2, title: 'Dreams and Goals', preview: 'I hope you have achieved...', deliveryDate: '2025-01-15' },
-    // Add more letter data here
-  ];
+    const {user} = useUser();
+    const [letters, setLetters] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const fetchData = async () => {
+        setIsLoading(true);
+        try {
+          // Fetch letters
+          const { data: letters, error: lettersError } = await supabase
+            .from('letter')
+            .select('*')
+            .eq('id_user', user.id)
+            .order('delivery_date', { ascending: true }) ;
+      
+          if (lettersError) {
+            console.error('Error fetching letters:', lettersError.message);
+          } else {
+            setLetters(letters.map(letter => ({...letter, preview: letter.content.length > 100 ? `${letter.content.substring(0, 100)}...`: letter.content})));
+          }
+        } catch (err) {
+          console.error('Unexpected error:', err);
+        }
+        setIsLoading(false);
+      };
+        useEffect(() => {
+            fetchData();
+            }
+        , []);
+
+        const handleDelete = (deletedId) => {
+            setLetters((prevLetters) => prevLetters.filter((letter) => letter.id !== deletedId));
+          };
 
   return (
-    <main className="min-h-screen bg-gradient-to-r from-deepPurple to-darkCharcoal text-metallicSilver flex items-center justify-center">
-      <div className="bg-darkCharcoal/80 p-8 rounded-xl shadow-lg w-full max-w-5xl backdrop-blur-md">
+    <main 
+        className={`min-h-screen py-10 w-full bg-cover bg-center bg-no-repeat bg-fixed grid place-items-center`}
+        style={{ backgroundImage: `url(${background})` }}>
         
-        {/* Title Section */}
-        <h2 className="text-3xl font-bold text-cyberYellow mb-8 text-center">
-          My Letters to the Future
-        </h2>
+        <div className="fixed inset-0 bg-black opacity-30"></div>
 
-        {/* Letter List */}
-        <div className="space-y-6">
-          {letters.map((letter) => (
-            <div key={letter.id} className="bg-darkCharcoal rounded-lg p-6 border-l-4 border-electricBlue shadow-md">
-              <h3 className="text-xl font-bold text-electricBlue mb-2">{letter.title}</h3>
-              <p className="text-sm mb-4">{letter.preview}</p>
-              <div className="flex justify-between items-center">
-                <span className="text-cyberYellow">Delivery Date: {letter.deliveryDate}</span>
-                <div className="space-x-4">
-                  <Link
-                    to={`/letters/${letter.id}`}
-                    className="text-electricBlue hover:underline"
-                  >
-                    View Details
-                  </Link>
-                  <button className="text-neonPink hover:text-red-500 transition duration-300">
-                    Delete
-                  </button>
+        <div className="bg-darkCharcoal/50 p-8 rounded-xl shadow-lg w-full max-w-5xl backdrop-blur-md">
+        
+            {/* Title Section */}
+            <h2 className="text-3xl font-bold text-cyberYellow mb-8 text-center">
+            My Letters to the Future
+            </h2>
+
+            {/* Loading Spinner */}
+            {isLoading ? <Loading />: <>
+                {/* Letter List */}
+                <ul className="space-y-8">
+                    {letters.map((letter) => (
+                        <LetterCard key={letter.id} letter={letter} onDelete={handleDelete}/>
+                    ))}
+                </ul>
+
+                {/* Add New Letter Button */}
+                <div className="flex justify-center mt-8">
+                    <Link
+                        to="/add-letter"
+                        className="bg-electricBlue text-darkCharcoal py-2 px-6 rounded-lg font-bold hover:bg-cyberYellow transition duration-300"
+                    >
+                        Add New Letter
+                    </Link>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Add New Letter Button */}
-        <div className="flex justify-center mt-8">
-          <Link
-            to="/add-letter"
-            className="bg-electricBlue text-darkCharcoal py-2 px-6 rounded-lg font-bold hover:bg-cyberYellow transition duration-300"
-          >
-            Add New Letter
-          </Link>
-        </div>
+            </>}
+        
       </div>
     </main>
   );
