@@ -11,7 +11,7 @@ const BackButton = () => {
 
   const logout = () => {
     logoutUser();
-    navigate('/', { replace: true });
+    navigate('/login', { replace: true });
   }
 
   const goback = () => {
@@ -19,7 +19,6 @@ const BackButton = () => {
   }
 
 
-  console.log(location)
   return (
     <button
       onClick={location.pathname == "/dashboard" ? logout : goback}

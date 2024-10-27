@@ -27,18 +27,20 @@ const AddGoal = () => {
   });
 
   const { user } = useUser();
-  const { goalId } = useParams();
+  const { id } = useParams();
   const [isSaving, setIsSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [goal, setGoal] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (goalId) {
-      // Fetch goal data if `goalId` exists for editing
+    if (id) {
       const fetchGoal = async () => {
+        setIsLoading(true);
         const { data, error } = await supabase
           .from("goal")
           .select("*")
-          .eq("id", goalId)
+          .eq("id", id)
           .single(); // Fetch a single goal
         
         if (error) {
@@ -48,11 +50,13 @@ const AddGoal = () => {
           setValue("content", data.content);
           setValue("deliveryDate", data.delivery_date);
           setIsEditing(true); // Set editing state to true
+          setGoal(data);
         }
+        setIsLoading(false);
       };
       fetchGoal();
     }
-  }, [goalId, setValue]);
+  }, [id, setValue]);
 
   const onSubmit = async (data) => {
     setIsSaving(true);
@@ -66,7 +70,7 @@ const AddGoal = () => {
           content: data.content,
           delivery_date: data.deliveryDate,
         })
-        .eq("id", goalId));
+        .eq("id", id));
     } else {
       // Insert new goal
       ({ error } = await supabase
@@ -126,6 +130,20 @@ const AddGoal = () => {
               {errors.deliveryDate.message}
             </p>
           )}
+
+          {/* AI Hint */}
+          <h2 className="text-3xl font-bold text-cyberYellow mb-6 text-center">
+            {"AI Hint"}
+        </h2>
+          {(goal && !goal.done) && <>
+            <textarea
+                {...register("content")}
+                placeholder="Write your message here..."
+                className="w-full p-4 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
+                rows={6}
+                />
+          </>}
+
           {/* Submit Button */}
           <button
             type="submit"

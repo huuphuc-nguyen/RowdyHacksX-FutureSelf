@@ -62,7 +62,7 @@ const GoalCard = ({goal, onComplete, onDelete}) => {
                     to={`/goals/${goal.id}`}
                     className="text-electricBlue hover:underline"
                     >
-                    View Details
+                    Details
                     </Link>
                   <button
                     onClick={handleDelete}
