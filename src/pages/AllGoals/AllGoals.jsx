@@ -11,6 +11,7 @@ const AllGoals = () => {
   const {user} = useUser();
   const [goals, setGoals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
   const fetchData = async () => {
     setIsLoading(true);
     try {

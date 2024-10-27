@@ -37,7 +37,7 @@ async function findDeliveryDate() {
   if (!user || error) {
     return;
   }
-  console.log("Through Text");
+
   const message =
     "Could you help refine this with additional bullet points and a motivating message and can you keep it short. Can you also just give me the answer and don't need to repeat the question: " +
     user.content;
