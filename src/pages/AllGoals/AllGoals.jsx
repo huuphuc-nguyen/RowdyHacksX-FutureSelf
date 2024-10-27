@@ -1,101 +1,94 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import BackButton from "../../components/BackButton";
-import background from "../../assets/background.jpg";
+import {useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
+import { useUser } from '../../context/UserContext';
+import { supabase } from "../../client.js";
+import Loading from '../../components/Loading/Loading.jsx'
+import LetterCard from '../../components/LetterCard/LetterCard.jsx';
+import background from '../../assets/background.jpg';
+import GoalCard from '../../components/GoalCard/GoalCard.jsx';
 
 const AllGoals = () => {
-  const [goals, setGoals] = useState([
-    {
-      id: 1,
-      title: "Become a Full-Stack Developer",
-      targetDate: "2024-12-31",
-      completed: false,
-    },
-    {
-      id: 2,
-      title: "Run a Marathon",
-      targetDate: "2025-05-20",
-      completed: true,
-    },
-    // Add more goals here
-  ]);
+  const {user} = useUser();
+  const [goals, setGoals] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      // Fetch letters
+      const { data: goals, error: goalsError } = await supabase
+        .from('goal')
+        .select('*')
+        .eq('id_user', user.id)
+        .order('delivery_date', { ascending: true }) ;
+  
+      if (goalsError) {
+        console.error('Error fetching goals:', goalsError.message);
+      } else {
+        setGoals(goals);
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+    }
+    setIsLoading(false);
+  };
+    useEffect(() => {
+        fetchData();
+        }
+    , []);
 
   // Mark goal as completed
   const toggleComplete = (id) => {
-    setGoals(
-      goals.map((goal) =>
-        goal.id === id ? { ...goal, completed: !goal.completed } : goal
-      )
-    );
+    setGoals(goals.map(goal =>
+      goal.id === id ? { ...goal, done: !goal.done } : goal
+    ));
   };
 
-  // Delete goal
-  const deleteGoal = (id) => {
-    setGoals(goals.filter((goal) => goal.id !== id));
+  const deleteGoal = (id) => {   
+    setGoals(goals.filter(goal => goal.id !== id));
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-r from-deepPurple to-darkCharcoal text-metallicSilver flex items-center justify-center">
-      <div className="bg-darkCharcoal/80 p-8 rounded-xl shadow-lg w-full max-w-5xl backdrop-blur-md">
-        <BackButton />
+    <main 
+        className={`min-h-screen py-10 w-full bg-cover bg-center bg-no-repeat bg-fixed grid place-items-center`}
+        style={{ backgroundImage: `url(${background})` }}>
+        <div className="fixed inset-0 bg-black opacity-30"></div>
+        <div className="bg-darkCharcoal/80 p-8 rounded-xl shadow-lg w-full max-w-5xl backdrop-blur-md">
+
         {/* Title Section */}
         <h2 className="text-3xl font-bold text-cyberYellow mb-8 text-center">
           My Future Goals
         </h2>
 
-        {/* Goal List */}
-        <div className="space-y-6">
-          {goals.map((goal) => (
-            <div
-              key={goal.id}
-              className={`bg-darkCharcoal rounded-lg p-6 border-l-4 ${
-                goal.completed ? "border-neonPink" : "border-electricBlue"
-              } shadow-md`}
+        {/* Loading Spinner */}
+        {isLoading ? <Loading />: <>
+            {/*Inprogress Goal List */}
+            <ul className="space-y-8">
+            {goals.filter(goal => !goal.done).map((goal) => (
+                <GoalCard key={goal.id} goal={goal} onComplete={toggleComplete} onDelete={deleteGoal}/>
+            ))}
+            </ul>
+            <div className='mb-8'></div>
+            
+            {/*Done Goal List */}
+            <ul className="space-y-8">
+            {goals.filter(goal => goal.done).map((goal) => (
+                <GoalCard key={goal.id} goal={goal} onComplete={toggleComplete} onDelete={deleteGoal}/>
+            ))}
+            </ul>
+            {/* Add New Goal Button */}
+            <div className="flex justify-center mt-8">
+            <Link
+                to="/add-goal"
+                className="bg-electricBlue text-darkCharcoal py-2 px-6 rounded-lg font-bold hover:bg-cyberYellow transition duration-300"
             >
-              <h3
-                className={`text-xl font-bold ${
-                  goal.completed ? "text-neonPink" : "text-electricBlue"
-                } mb-2`}
-              >
-                {goal.title}
-              </h3>
-              <div className="flex justify-between items-center">
-                <span className="text-cyberYellow">
-                  Target Date: {goal.targetDate}
-                </span>
-                <div className="space-x-4">
-                  <button
-                    onClick={() => toggleComplete(goal.id)}
-                    className={`${
-                      goal.completed ? "text-electricBlue" : "text-neonPink"
-                    } hover:underline`}
-                  >
-                    {goal.completed ? "Mark as In Progress" : "Mark as Done"}
-                  </button>
-                  <button
-                    onClick={() => deleteGoal(goal.id)}
-                    className="text-red-500 hover:text-neonPink transition duration-300"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
+                Add New Goal
+            </Link>
             </div>
-          ))}
-        </div>
-
-        {/* Add New Goal Button */}
-        <div className="flex justify-center mt-8">
-          <Link
-            to="/add-goal"
-            className="bg-electricBlue text-darkCharcoal py-2 px-6 rounded-lg font-bold hover:bg-cyberYellow transition duration-300"
-          >
-            Add New Goal
-          </Link>
-        </div>
+        </>}
+        
       </div>
     </main>
-  );
-};
+    );
+}
 
 export default AllGoals;

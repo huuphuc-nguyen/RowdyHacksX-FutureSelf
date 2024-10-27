@@ -2,6 +2,7 @@ import React from 'react'
 import { supabase } from "../../client.js";
 import { toast } from "sonner";
 import {format} from 'date-fns';
+import { Link } from 'react-router-dom';
 
 const GoalCard = ({goal, onComplete, onDelete}) => {
     const formattedDate = format(new Date(goal.delivery_date), 'MM/dd/yyyy');
@@ -51,11 +52,18 @@ const GoalCard = ({goal, onComplete, onDelete}) => {
                   <button
                     onClick={handleToggleComplete}
                     className={`${
+                    
                       goal.done ? 'text-electricBlue' : 'text-neonPink'
                     } hover:underline`}
                   >
                     {goal.done ? 'Mark as In Progress' : 'Mark as Done'}
                   </button>
+                  <Link
+                    to={`/goals/${goal.id}`}
+                    className="text-electricBlue hover:underline"
+                    >
+                    View Details
+                    </Link>
                   <button
                     onClick={handleDelete}
                     className="text-red-500 hover:text-neonPink transition duration-300"
