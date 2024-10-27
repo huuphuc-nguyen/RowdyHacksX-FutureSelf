@@ -1,10 +1,8 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import background from '../../assets/background2.jpg';
 import Typing from 'react-typing-effect';
 
 const Home = () => {
-
   return (
  
     <main
@@ -27,7 +25,7 @@ const Home = () => {
         <p className="text-lg italic max-w-lg mb-6">
           Step into the future and set goals, memories, and aspirations for your future self.
         </p>
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 mt-10">
           <Link to="/signup" className="bg-electricBlue text-darkCharcoal rounded-lg px-6 py-3 hover:scale-105 hover:shadow-lg">
             Sign Up
           </Link>

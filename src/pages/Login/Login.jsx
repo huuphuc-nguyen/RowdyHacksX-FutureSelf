@@ -1,5 +1,5 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import {useState} from "react";
+import { set, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { BsFillPersonFill, BsFillKeyFill } from "react-icons/bs";
@@ -7,6 +7,7 @@ import background from "../../assets/background2.jpg";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { supabase } from "../../client.js";
+import { useUser } from "../../context/UserContext.js";
 
 const schema = yup.object().shape({
   userName: yup.string().required("Please enter your username"),
@@ -14,18 +15,22 @@ const schema = yup.object().shape({
 });
 
 const Login = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const {loginUser} = useUser();
+    const [isSaving, setIsSaving] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
 
   const onSubmit = async (data) => {
+    setIsSaving(true);
     try {
       // Single query to find user by username and password
       const { data: user, error } = await supabase
@@ -40,6 +45,7 @@ const Login = () => {
         toast.error("Wrong username or password");
       } else {
         // Redirect to dashboard if login is successful
+        loginUser(user.id, user.email, user.name)
         navigate("/dashboard");
         reset();
       }
@@ -47,6 +53,7 @@ const Login = () => {
       console.error("Login error:", error);
       toast.error("An error occurred. Please try again.");
     }
+    setIsSaving(false);
   };
 
   return (
@@ -91,9 +98,10 @@ const Login = () => {
 
             <button
               type="submit"
-              className="self-center bg-electricBlue text-darkCharcoal rounded-lg px-4 py-2 mt-8 shadow-md hover:bg-cyberYellow hover:scale-105 duration-300"
+              disabled={isSaving}
+              className="self-center bg-electricBlue text-darkCharcoal rounded-lg px-4 py-2 mt-8 shadow-md hover:bg-cyberYellow/80 hover:scale-105 duration-300"
             >
-              {false ? "...Loading" : "Login"}
+              {isSaving ? "Loading..." : "Login"}
             </button>
           </form>
         </div>

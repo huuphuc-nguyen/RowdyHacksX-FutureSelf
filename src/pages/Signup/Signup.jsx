@@ -1,4 +1,4 @@
-import React from 'react';
+import {useState} from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -21,7 +21,9 @@ const Signup = () => {
   });
 
     const navigate = useNavigate(); 
-  const onSubmit = async (data) => {
+    const [isSaving, setIsSaving] = useState(false);
+
+    const onSubmit = async (data) => {
     const {error} = await supabase.from('user').insert([
         {
             email: data.email,
@@ -34,7 +36,7 @@ const Signup = () => {
     } else {
         toast.success('Created account successfully');
         reset(); // Clear form only if the insertion was successful
-        navigate('/dashboard');
+        navigate('/login');
     }
   };
 
@@ -88,9 +90,11 @@ const Signup = () => {
 
             <button
               type="submit"
-              className='self-center bg-electricBlue text-darkCharcoal rounded-lg px-4 py-2 mt-8 shadow-md hover:bg-cyberYellow hover:scale-105 duration-300'
+              disabled={isSaving}
+              className='self-center bg-electricBlue text-darkCharcoal rounded-lg px-4 py-2 mt-8 shadow-md hover:bg-cyberYellow/80 hover:scale-105 duration-300'
             >
-              Sign Up
+            {isSaving ? 'Loading...' : 'Sign up'}
+              
             </button>
           </form>
         </div>
