@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { toast } from 'sonner';
 import { supabase } from '../../client';
 import background from '../../assets/background2.jpg';
-import {useUser} from '../../context/UserContext'
-import { useState } from "react";
-
+import { useUser } from '../../context/UserContext';
+import { useParams } from 'react-router-dom';
 
 const schema = yup.object().shape({
   title: yup
@@ -25,31 +24,77 @@ const schema = yup.object().shape({
     .min(new Date(), 'Delivery date cannot be in the past')
 });
 
-const AddLetter = () => {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+const DetailLetter = () => {
+  const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm({
     resolver: yupResolver(schema)
   });
-
-  const {user} = useUser();
+  
+  const { user } = useUser();
+  const { id } = useParams();
   const [isSaving, setIsSaving] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    // Fetch letter data if `id` exists for editing
+    if (id) {
+      const fetchLetter = async () => {
+        const { data, error } = await supabase
+          .from('letter')
+          .select('*')
+          .eq('id', id)
+          .single(); // Get only one letter
+        
+        if (error) {
+          console.error('Error fetching letter:', error.message);
+          toast.error('Failed to load letter');
+        } else if (data) {
+          // Set the form values with fetched data
+          setValue('title', data.title);
+          setValue('content', data.content);
+          setValue('deliveryDate', data.delivery_date);
+          setIsEditing(true); // Set editing state to true
+        }
+      };
+      fetchLetter();
+    }
+  }, [id, setValue]);
 
   const onSubmit = async (data) => {
+    setIsSaving(true);
+    let error;
 
-    const {error} = await supabase.from('letter').insert([
-        { 
+    if (isEditing) {
+      // Update existing letter
+      ({ error } = await supabase
+        .from('letter')
+        .update({
+          title: data.title,
+          content: data.content,
+          delivery_date: data.deliveryDate
+        })
+        .eq('id', id));
+    } else {
+      // Insert new letter
+      ({ error } = await supabase
+        .from('letter')
+        .insert([
+          { 
             title: data.title,
             content: data.content,
             delivery_date: data.deliveryDate,
             id_user: user.id
-        }
-    ]);
-    if (error) {
-        console.error('Insert failed:', error.message);
-        toast.error('Failed to save letter');
-    } else {
-      toast.success('Letter saved! Prepare for delivery to the future!');
-      reset(); 
+          }
+        ]));
     }
+
+    if (error) {
+      console.error(isEditing ? 'Update failed:' : 'Insert failed:', error.message);
+      toast.error(isEditing ? 'Failed to update letter' : 'Failed to save letter');
+    } else {
+      toast.success(isEditing ? 'Letter updated successfully!' : 'Letter saved! Prepare for delivery to the future!');
+    }
+
+    setIsSaving(false);
   };
 
   return (
@@ -58,7 +103,7 @@ const AddLetter = () => {
       style={{ backgroundImage: `url(${background})` }}>
       <div className="bg-darkCharcoal/50 p-8 rounded-xl shadow-lg w-full max-w-3xl backdrop-blur-md">
         <h2 className="text-3xl font-bold text-cyberYellow mb-6 text-center">
-          Write a Letter to Your Future Self
+          {isEditing ? 'Edit Your Letter' : 'Write a Letter to Your Future Self'}
         </h2>
         
         {/* Form with validation */}
@@ -69,10 +114,9 @@ const AddLetter = () => {
             {...register('title')}
             placeholder="Enter your letter title..."
             className="w-full p-4 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
-            rows={6}
-          ></input>
-          {errors.content && (
-            <p className="text-sm text-neonPink font-semibold">{errors.content.message}</p>
+          />
+          {errors.title && (
+            <p className="text-sm text-neonPink font-semibold">{errors.title.message}</p>
           )}
 
           {/* Content Textarea */}
@@ -81,7 +125,7 @@ const AddLetter = () => {
             placeholder="Write your message here..."
             className="w-full p-4 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
             rows={6}
-          ></textarea>
+          />
           {errors.content && (
             <p className="text-sm text-neonPink font-semibold">{errors.content.message}</p>
           )}
@@ -102,7 +146,7 @@ const AddLetter = () => {
             disabled={isSaving}
             className="w-full bg-electricBlue text-darkCharcoal py-3 rounded-lg font-bold hover:bg-cyberYellow/80 hover:scale-105 transition duration-300"
           >
-            {isSaving ? 'Saving...' : 'Save Letter'}
+            {isSaving ? 'Saving...' : isEditing ? 'Update Letter' : 'Save Letter'}
           </button>
         </form>
       </div>
@@ -110,4 +154,4 @@ const AddLetter = () => {
   );
 };
 
-export default AddLetter;
+export default DetailLetter;
