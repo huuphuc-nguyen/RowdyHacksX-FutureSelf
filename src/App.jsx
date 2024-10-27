@@ -9,6 +9,8 @@ import AddGoal from './pages/AddGoal/AddGoal'
 import AllLetters from './pages/AllLetters/AllLetters'
 import AllGoals from './pages/AllGoals/AllGoals'
 import DataDisplay from "./pages/DataDisplay"
+import ViewDetail from './pages/ViewDetail'
+
 import { Toaster } from 'sonner'
 
 function App() {
@@ -23,6 +25,7 @@ function App() {
         <Route path="/all-letters" element={<AllLetters />} />
         <Route path="/all-goals" element={<AllGoals />} />
         <Route path="/" element={<Home />} />
+         <Route path="/letters/:id" element={<ViewDetail />}/>
         <Route path="/data" element={<DataDisplay/>}/>
       </Routes>
       </>
