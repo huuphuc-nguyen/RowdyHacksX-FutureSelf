@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import BackButton from "../../components/BackButton";
 import { useParams } from "react-router-dom";
 import { getGroqChatCompletion } from "../../../server/groq";
+import Loading from "../../components/Loading/Loading"
 
 const schema = yup.object().shape({
   content: yup
@@ -52,7 +53,9 @@ const AddGoal = () => {
             "Break down this goal and make some bullet point for me. Can you also just give me the answer and don't need to repeat the question: " +
             data.content;
           const answer = await getGroqChatCompletion(message);
+
           console.log(answer.choices[0].message.content);
+
           setValue("content", data.content);
           setValue("deliveryDate", data.delivery_date);
           setValue("aiHint", answer.choices[0].message.content);
@@ -141,11 +144,11 @@ const AddGoal = () => {
               {errors.deliveryDate.message}
             </p>
           )}
-
+ 
           {/* AI Hint */}
-          <h2 className="text-3xl font-bold text-cyberYellow mb-6 text-center">
+          <h3 className="text-2xl font-bold text-cyberYellow mb-6 text-center">
             {"AI Hint"}
-        </h2>
+            </h3>
           {(goal && !goal.done) && <>
             <textarea
                 {...register("aiHint")}
