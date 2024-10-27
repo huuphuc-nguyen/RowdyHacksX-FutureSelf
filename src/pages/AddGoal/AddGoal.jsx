@@ -106,6 +106,10 @@ const AddGoal = () => {
         <h2 className="text-3xl font-bold text-cyberYellow mb-6 text-center">
           {isEditing ? "Edit Your Goal" : "Set Your Future Goals"}
         </h2>
+
+        {isLoading ? <Loading /> : <>
+            
+        </>}  
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Content Input */}
           <input
