@@ -155,6 +155,7 @@ const AddGoal = () => {
                 placeholder="Write your message here..."
                 className="w-full p-4 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
                 rows={6}
+                disabled={true}
                 />
           </>}
 
