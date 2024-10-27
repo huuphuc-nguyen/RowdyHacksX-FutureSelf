@@ -7,6 +7,7 @@ import background from "../../assets/background2.jpg";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { supabase } from "../../client.js";
+import { useUser } from "../../context/UserContext.js";
 
 const schema = yup.object().shape({
   userName: yup.string().required("Please enter your username"),
@@ -15,6 +16,7 @@ const schema = yup.object().shape({
 
 const Login = () => {
   const navigate = useNavigate();
+    const {loginUser} = useUser();
 
   const {
     register,
@@ -40,6 +42,7 @@ const Login = () => {
         toast.error("Wrong username or password");
       } else {
         // Redirect to dashboard if login is successful
+        loginUser(user.id, user.email, user.name)
         navigate("/dashboard");
         reset();
       }

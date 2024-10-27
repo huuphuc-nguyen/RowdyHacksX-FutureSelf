@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { toast } from 'sonner';
 import { supabase } from '../../client';
 import background from '../../assets/background2.jpg';
+import {useUser} from '../../context/UserContext'
 
 const schema = yup.object().shape({
   title: yup
@@ -26,13 +27,17 @@ const AddLetter = () => {
     resolver: yupResolver(schema)
   });
 
+  const {user} = useUser();
+  console.log(user);
+
   const onSubmit = async (data) => {
 
     const {error} = await supabase.from('letter').insert([
         { 
             title: data.title,
             content: data.content,
-            delivery_date: data.deliveryDate
+            delivery_date: data.deliveryDate,
+            id_user: user.id
         }
     ]);
     if (error) {

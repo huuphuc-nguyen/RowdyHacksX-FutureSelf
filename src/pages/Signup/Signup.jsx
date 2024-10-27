@@ -34,7 +34,7 @@ const Signup = () => {
     } else {
         toast.success('Created account successfully');
         reset(); // Clear form only if the insertion was successful
-        navigate('/dashboard');
+        navigate('/login');
     }
   };
 

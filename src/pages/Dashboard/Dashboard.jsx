@@ -6,22 +6,16 @@ import { date } from 'yup';
 
 const Dashboard = () => {
     const list=[{
+        id:1,
         content: 'Letter 1',
         date: '2022-12-12'
     },{
+        id:2,
         content: 'Letter 2',
         date: '2022-12-12'
-    },{
-        content: 'Letter 3',
-        date: '2022-12-12'
-    },{
-        content: 'Letter 4',
-        date: '2022-12-12'
-    },{
-        content: 'Letter 5',
-        date: '2022-12-12'
-    }
+    },
     ]
+
   return (
     <main 
     className={`min-h-screen w-full bg-cover grid place-items-center bg-center bg-no-repeat before:content-[''] before:absolute before:inset-0 before:bg-black before:opacity-30`}
@@ -35,17 +29,17 @@ const Dashboard = () => {
 
         {/* Quick Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-darkCharcoal p-4 rounded-lg shadow-md text-center border border-electricBlue">
+          <div className="bg-metall p-4 rounded-lg shadow-md text-center border border-electricBlue">
             <h3 className="text-lg font-bold text-electricBlue">Total Letters</h3>
-            <p className="text-2xl font-bold">5</p>
+            <p className="text-2xl font-bold text-metallicSilver">5</p>
           </div>
           <div className="bg-darkCharcoal p-4 rounded-lg shadow-md text-center border border-neonPink">
             <h3 className="text-lg font-bold text-neonPink">Total Goals</h3>
-            <p className="text-2xl font-bold">8</p>
+            <p className="text-2xl font-bold text-metallicSilver">8</p>
           </div>
           <div className="bg-darkCharcoal p-4 rounded-lg shadow-md text-center border border-cyberYellow">
             <h3 className="text-lg font-bold text-cyberYellow">Completed Goals</h3>
-            <p className="text-2xl font-bold">3</p>
+            <p className="text-2xl font-bold text-metallicSilver">3</p>
           </div>
         </div>
 
