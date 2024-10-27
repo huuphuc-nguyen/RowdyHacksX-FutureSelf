@@ -50,7 +50,7 @@ const AddGoal = () => {
           toast.error("Failed to load goal data");
         } else if (data) {
           const message =
-            "Break down this goal and make some bullet point for me. Can you also just give me the answer and don't need to repeat the question: " +
+            "Break down this goal and make some bullet point for me. Can you also just give me the answer and don't need to repeat the question and give answer so that I can set text for the html text area: " +
             data.content;
           const answer = await getGroqChatCompletion(message);
 
@@ -113,61 +113,63 @@ const AddGoal = () => {
     >
       <div className="bg-darkCharcoal/50 p-8 rounded-xl shadow-lg w-full max-w-3xl backdrop-blur-md">
         <BackButton />
-        <h2 className="text-3xl font-bold text-cyberYellow mb-6 text-center">
-          {isEditing ? "Edit Your Goal" : "Set Your Future Goals"}
-        </h2>
+        
 
         {isLoading ? <Loading /> : <>
-            
-        </>}  
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Content Input */}
-          <input
-            type="text"
-            {...register("content")}
-            placeholder="Enter your goal..."
-            className="w-full p-3 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
-          />
-          {errors.content && (
-            <p className="text-sm text-neonPink font-semibold">
-              {errors.content.message}
-            </p>
-          )}
-          {/* Delivery Date Input */}
-          <input
-            type="date"
-            {...register("deliveryDate")}
-            className="w-full p-3 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
-          />
-          {errors.deliveryDate && (
-            <p className="text-sm text-neonPink font-semibold">
-              {errors.deliveryDate.message}
-            </p>
-          )}
- 
-          {/* AI Hint */}
-          <h3 className="text-2xl font-bold text-cyberYellow mb-6 text-center">
-            {"AI Hint"}
-            </h3>
-          {(goal && !goal.done) && <>
-            <textarea
-                {...register("aiHint")}
-                placeholder="Write your message here..."
-                className="w-full p-4 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
-                rows={6}
-                disabled={true}
-                />
-          </>}
+            <h2 className="text-3xl font-bold text-cyberYellow mb-6 text-center">
+                {isEditing ? "Edit Your Goal" : "Set Your Future Goals"}
+            </h2>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={isSaving}
-            className="w-full bg-electricBlue text-darkCharcoal/90 py-3 rounded-lg font-bold hover:bg-cyberYellow/80 hover:scale-105 transition duration-300"
-          >
-            {isSaving ? "Saving..." : isEditing ? "Update Goal" : "Add Goal"}
-          </button>
-        </form>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Content Input */}
+                <input
+                    type="text"
+                    {...register("content")}
+                    placeholder="Enter your goal..."
+                    className="w-full p-3 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
+                />
+                {errors.content && (
+                    <p className="text-sm text-neonPink font-semibold">
+                    {errors.content.message}
+                    </p>
+                )}
+                {/* Delivery Date Input */}
+                <input
+                    type="date"
+                    {...register("deliveryDate")}
+                    className="w-full p-3 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
+                />
+                {errors.deliveryDate && (
+                    <p className="text-sm text-neonPink font-semibold">
+                    {errors.deliveryDate.message}
+                    </p>
+                )}
+        
+                {/* AI Hint */}
+                <h3 className="text-2xl font-bold text-cyberYellow mb-6 text-center">
+                    {"AI Hint"}
+                    </h3>
+                {(goal && !goal.done) ?
+                    <textarea
+                        {...register("aiHint")}
+                        placeholder="Write your message here..."
+                        className="w-full p-4 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
+                        rows={6}
+                        disabled={true}
+                        /> : 
+                        <p className="text-md text-electricBlue font-semibold text-center"> You obtained this goal !! </p>}
+
+                {/* Submit Button */}
+                <button
+                    type="submit"
+                    disabled={isSaving}
+                    className="w-full bg-electricBlue text-darkCharcoal/90 py-3 rounded-lg font-bold hover:bg-cyberYellow/80 hover:scale-105 transition duration-300"
+                >
+                    {isSaving ? "Saving..." : isEditing ? "Update Goal" : "Add Goal"}
+                </button>
+                </form>
+        </>}  
+       
       </div>
     </main>
   );

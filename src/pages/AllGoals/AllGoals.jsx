@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import { supabase } from "../../client.js";
 import Loading from '../../components/Loading/Loading.jsx'
-import LetterCard from '../../components/LetterCard/LetterCard.jsx';
 import background from '../../assets/background.jpg';
 import GoalCard from '../../components/GoalCard/GoalCard.jsx';
+import BackButton from "../../components/BackButton.jsx"
 
 const AllGoals = () => {
   const {user} = useUser();
@@ -54,6 +54,7 @@ const AllGoals = () => {
         style={{ backgroundImage: `url(${background})` }}>
         <div className="fixed inset-0 bg-black opacity-30"></div>
         <div className="bg-darkCharcoal/80 p-8 rounded-xl shadow-lg w-full max-w-5xl backdrop-blur-md">
+        <BackButton />
 
         {/* Title Section */}
         <h2 className="text-3xl font-bold text-cyberYellow mb-8 text-center">
