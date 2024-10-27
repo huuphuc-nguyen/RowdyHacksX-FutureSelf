@@ -13,9 +13,7 @@ import { Toaster } from 'sonner'
 
 function App() {
     return (   <>
-      <Toaster position='top-right' richColors closeButton toastOptions={{
-        style: { padding: '20px' },
-      }} />
+      <Toaster position='top-right' richColors closeButton  />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />

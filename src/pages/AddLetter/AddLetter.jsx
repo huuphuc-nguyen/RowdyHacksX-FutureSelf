@@ -6,6 +6,8 @@ import { toast } from 'sonner';
 import { supabase } from '../../client';
 import background from '../../assets/background2.jpg';
 import {useUser} from '../../context/UserContext'
+import { useState } from "react";
+
 
 const schema = yup.object().shape({
   title: yup
@@ -18,6 +20,7 @@ const schema = yup.object().shape({
     .min(10, 'Message must be at least 10 characters long'),
   deliveryDate: yup
     .date()
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
     .required('Please select a delivery date')
     .min(new Date(), 'Delivery date cannot be in the past')
 });
@@ -28,7 +31,7 @@ const AddLetter = () => {
   });
 
   const {user} = useUser();
-  console.log(user);
+  const [isSaving, setIsSaving] = useState(false);
 
   const onSubmit = async (data) => {
 
@@ -53,7 +56,7 @@ const AddLetter = () => {
     <main 
       className={`min-h-screen w-full bg-cover grid place-items-center bg-center bg-no-repeat before:content-[''] before:absolute before:inset-0 before:bg-black before:opacity-30`}
       style={{ backgroundImage: `url(${background})` }}>
-      <div className="bg-darkCharcoal/80 p-8 rounded-xl shadow-lg w-full max-w-3xl backdrop-blur-md">
+      <div className="bg-darkCharcoal/50 p-8 rounded-xl shadow-lg w-full max-w-3xl backdrop-blur-md">
         <h2 className="text-3xl font-bold text-cyberYellow mb-6 text-center">
           Write a Letter to Your Future Self
         </h2>
@@ -65,7 +68,7 @@ const AddLetter = () => {
           <input
             {...register('title')}
             placeholder="Enter your letter title..."
-            className="w-full p-4 rounded-lg bg-darkCharcoal text-metallicSilver outline-none focus:border-neonPink focus:border-2"
+            className="w-full p-4 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
             rows={6}
           ></input>
           {errors.content && (
@@ -76,7 +79,7 @@ const AddLetter = () => {
           <textarea
             {...register('content')}
             placeholder="Write your message here..."
-            className="w-full p-4 rounded-lg bg-darkCharcoal text-metallicSilver outline-none focus:border-neonPink focus:border-2"
+            className="w-full p-4 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-neonPink focus:border-2"
             rows={6}
           ></textarea>
           {errors.content && (
@@ -87,7 +90,7 @@ const AddLetter = () => {
           <input
             type="date"
             {...register('deliveryDate')}
-            className="w-full p-3 rounded-lg bg-darkCharcoal text-metallicSilver outline-none focus:border-electricBlue focus:border-2"
+            className="w-full p-3 rounded-lg bg-darkCharcoal/90 text-metallicSilver outline-none focus:border-electricBlue focus:border-2"
           />
           {errors.deliveryDate && (
             <p className="text-sm text-neonPink font-semibold">{errors.deliveryDate.message}</p>
@@ -96,9 +99,10 @@ const AddLetter = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-electricBlue text-darkCharcoal py-3 rounded-lg font-bold hover:bg-cyberYellow hover:scale-105 transition duration-300"
+            disabled={isSaving}
+            className="w-full bg-electricBlue text-darkCharcoal py-3 rounded-lg font-bold hover:bg-cyberYellow/80 hover:scale-105 transition duration-300"
           >
-            Save Letter
+            {isSaving ? 'Saving...' : 'Save Letter'}
           </button>
         </form>
       </div>

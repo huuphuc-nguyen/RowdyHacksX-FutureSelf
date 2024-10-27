@@ -13,7 +13,7 @@ const ItemSection = ({section, itemlist}) => {
         <h3 className="text-2xl font-bold text-cyberYellow mb-4">{title}</h3>
         <ul className="space-y-4">
             {itemlist.map((item) => (
-                <ItemCard key={item.id} content={item.content} date={item.date} />
+                <ItemCard key={item.id} content={item.content} delivery_date={item.delivery_date} section={section} />
             ))}  
         </ul>
         {section == 'letters' ? (
