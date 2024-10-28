@@ -8,7 +8,7 @@ import { useUser } from "../../context/UserContext";
 import { useState, useEffect } from "react";
 import BackButton from "../../components/BackButton";
 import { useParams } from "react-router-dom";
-import { getGroqChatCompletion } from "../../../server/groq";
+import { getGroqChatCompletion } from "../../groq";
 import Loading from "../../components/Loading/Loading"
 
 const schema = yup.object().shape({
@@ -50,7 +50,7 @@ const AddGoal = () => {
           toast.error("Failed to load goal data");
         } else if (data) {
           const message =
-            "Break down this goal and make some bullet point for me. Can you also just give me the answer and don't need to repeat the question and give answer so that I can set text for the html text area: " +
+            "Break down this goal and make some bullet point for me. Can you also just give me the answer and don't need to repeat the question, don't use markdown give answer so that I can set text for the html text area: " +
             data.content;
           const answer = await getGroqChatCompletion(message);
 
