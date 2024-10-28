@@ -50,7 +50,7 @@ const AddGoal = () => {
           toast.error("Failed to load goal data");
         } else if (data) {
           const message =
-            "Break down this goal and make some bullet point for me. Can you also just give me the answer and don't need to repeat the question, don't use markdown give answer so that I can set text for the html text area: " +
+            "Break down the goal I input into as many specific, actionable steps as possible. Provide only the steps in a concise bullet-point format, without repeating my input or using extra text. Answer in plain text." +
             data.content;
           const answer = await getGroqChatCompletion(message);
 
